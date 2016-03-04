@@ -513,10 +513,10 @@ results for 10000 parallel executions, 1 ms per I/O op
 <br\>
 <br\>
 <br\>
-
- Platform info
- Linux 3.10.0-229.20.1.el7.x86_64 x64
- Node.JS 5.0.0
- V8 4.6.85.28
- Intel(R) Core(TM) i3-4150 CPU @ 3.50GHz × 1
+  
+Platform info:  
+Linux 3.10.0-229.20.1.el7.x86_64 x64  
+Node.JS 5.0.0  
+V8 4.6.85.28  
+Intel(R) Core(TM) i3-4150 CPU @ 3.50GHz × 1  
 
