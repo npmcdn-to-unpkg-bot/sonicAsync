@@ -1,6 +1,6 @@
 # Sonic-Async
 
-**Sonic-Async is an async flow control javascript library with excellent [`performance`](#performance) characteristics.  
+Sonic-Async is an async flow control javascript library with excellent [`performance`](#performance) characteristics.  
 It consistently comes out on top on benchmarking runs.  For the API calls that are currently available, 
 they are compatible with Async except [`waterfall`](#waterfall).
 
@@ -9,7 +9,7 @@ Sonic-Async can be installed with npm.
 
     $npm install sonic-async
 
-You can also use it in a browser.**
+You can also use it in a browser.
 
 ```html
 <script type="text/javascript" src="sonicAsync.js"></script>
@@ -510,9 +510,13 @@ results for 10000 parallel executions, 1 ms per I/O op
 
 
 
-Platform info:
-Linux 3.10.0-229.20.1.el7.x86_64 x64
-Node.JS 5.0.0
-V8 4.6.85.28
-Intel(R) Core(TM) i3-4150 CPU @ 3.50GHz × 1
+<br\>
+<br\>
+<br\>
+
+Platform info<br\>
+Linux 3.10.0-229.20.1.el7.x86_64 x64<br\>
+Node.JS 5.0.0<br\>
+V8 4.6.85.28<br\>
+Intel(R) Core(TM) i3-4150 CPU @ 3.50GHz × 1<br\>
 
