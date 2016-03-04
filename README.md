@@ -509,10 +509,7 @@ results for 10000 parallel executions, 1 ms per I/O op
 |promises-obvious-kew.js|                           5936|      823.56|
 
 
-
-<br\>
-<br\>
-<br\>
+<br />
   
 Platform info:  
 Linux 3.10.0-229.20.1.el7.x86_64 x64  
