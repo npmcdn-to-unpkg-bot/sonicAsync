@@ -228,7 +228,6 @@ __Example__
 soniAsync.waterfall([
     // the wrapping function always has the signature of function(data, callback)
     function(data, callback) {
-        // for 1st task, data is usually null, but value can be passed in
         callback(null, 1);
     },
     function(data, callback) {
@@ -453,7 +452,7 @@ This is a special case of filterLimit with limit set to 1.
 
 The code for benchmarking is a copy from bluebird's benchmark.
 A correction has been made to remove the bias against async style libraries
-in parallel bechmarking.  See bluebird issue #985 for details.
+in parallel bechmarking.  See [`bluebird issue #985`](https://github.com/petkaantonov/bluebird/issues/985) for details.
 
 
 ### DoxBee sequential
