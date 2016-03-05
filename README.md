@@ -56,7 +56,7 @@ Here, the err and data are the values from 2 arguments of the task callback.
 
 * Usage:
 ```js
-  sonicAsync = require('sonicAsync');  
+  sonicAsync = require('sonic-async');  
   sonicAsync.silent = true;  // no message will be printed
 ```
 
