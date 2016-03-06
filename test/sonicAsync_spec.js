@@ -2,7 +2,7 @@ var assert = require('chai').assert;
 
 var useapply = 0;
 var async = require('../sonicAsync');
-async.noerrout = 1;
+async.errout = 0;
 async.silent = 0;
 sonicSuite(async, "sonicAsync");
 
@@ -124,7 +124,7 @@ function sonicSuite(async, sonicName){
             async.filterSeries([1,2,3,4,5,6,7,8,9], filtertst, wrap_result_cb(done, 'filterSeries'));
         });
         it('filter tasks in parallel(filter)', function(done){
-            async.filterParallel([1,2,3,4,5,6,7,8,9], filtertst, wrap_result_cb(done, 'filter'));
+            async.filter([1,2,3,4,5,6,7,8,9], filtertst, wrap_result_cb(done, 'filter'));
         });
         it('filter tasks in parallel', function(done){
             async.filterParallel([1,2,3,4,5,6,7,8,9], filtertst, wrap_result_cb(done, 'filterParallel'));
