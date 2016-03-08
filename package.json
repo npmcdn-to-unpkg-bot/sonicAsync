@@ -1,6 +1,6 @@
 {
   "name": "sonic-async",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "async flow control with sonic speed",
   "main": "sonicAsync.js",
   "scripts": {
