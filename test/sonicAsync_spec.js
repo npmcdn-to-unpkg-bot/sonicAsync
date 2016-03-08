@@ -1,3 +1,5 @@
+"user strict";
+
 var assert = require('chai').assert;
 
 var useapply = 0;
@@ -22,6 +24,9 @@ function mktrack(valarray, safewf) {
             if( arguments[arguments.length-2] )
                 var result = arguments[arguments.length-2];
             setTimeout(function plusone(){
+                if( (val===5 ||val===1) && alltest === 1 )
+                    return next('error', null);
+
                 var nextval = val;
                 if( result ) nextval = nextval + result;
                 else nextval = nextval + 1;
@@ -65,6 +70,8 @@ var cmp = {
     parallelLimit: {op: assert.deepEqual, val:[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]},
     series: {op: assert.deepEqual, val:[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]},
     parallel: {op: assert.deepEqual, val:[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]},
+    race: {op: assert.isAtLeast, val: 1},
+    all: {op: assert.deepEqual, val:[ 1, 'error', 3, 4, 5, 'error', 7, 8, 9, 10 ]},
     mapSeries: {op: assert.deepEqual, val:[ 2,4,6]},
     mapLimit: {op: assert.deepEqual, val:[ 2,4,6]},
     mapParallel: {op: assert.deepEqual, val:[ 2,4,6]},
@@ -90,10 +97,19 @@ for(var i=0;i<10;i++) {
 var track1 = mktrack(ary);
 useapply = 1;
 var track2 = mktrack(ary);
+var alltest = 0;
 
 function sonicSuite(async, sonicName){
     describe(sonicName, function(){
+        it('runs tasks in parallel for race', function(done){
+            async.race(track1,  wrap_result_cb(done, 'race'));
+        });
+        it('runs tasks in parallel for all', function(done){
+            alltest = 1;
+            async.all(track1,  wrap_result_cb(done, 'all'));
+        });
         it('runs tasks in parallel', function(done){
+            alltest = 0;
             async.parallel(track1,  wrap_result_cb(done, 'parallel'));
         });
         it('runs tasks in fastWaterfall', function(done){

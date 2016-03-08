@@ -22,8 +22,10 @@ Click the name of each API for details.
 
 ### Control Flow
 
+* [`all`](#all) - runs all the tasks in parallel regardless what the return staus of each task.
 * [`parallel`](#parallel) - runs all the tasks in parallel.
 * [`parallelLimit`](#parallelLimit) - runs tasks in parallel with limited concurrency.
+* [`race`](#race) - runs all the tasks in parallel and the optional done callback returns the result from the 1st completed task.
 * [`series`](#series) - runs tasks sequencially.
 * [`waterfall`](#waterfall) - runs tasks sequencially and passes the result from one to the next.
 * [`fastWaterfall`](#fastWaterfall) - runs tasks sequencially and passes the result from one to the next.
@@ -63,6 +65,48 @@ Here, the err and data are the values from 2 arguments of the task callback.
 ## API Details
 
 ### Control Flow
+
+<a name="all"></a>
+#### all(tasks, [done_callback])
+
+Runs all the `tasks` in parallel as if all of them run at the same time. If any one of the tasks passes an error to its callback, 
+the error is stored in the results array instead of calling done_callback immediately.  All tasks are run until completion regardless what status they return.
+
+
+__Arguments__
+
+* `tasks` - an array of functions to be executed. Each function is passed
+  a `callback(err, result)` which it must call on completion with an error `err`
+  (which can be `null`) and an optional `result` value.
+* `done_callback(err, results)` - an optional callback to be executed once all the functions have completed.  
+The results argument is an array that contains the values produced by all the tasks with the order aligned with `tasks`.
+err is always set to null.
+
+__Example__
+
+```js
+sonicAsync.all([
+    function(callback){
+        setTimeout(function(){
+            callback('error', null);
+        }, 2);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 3);
+        }, 3);
+    }
+],
+// optional done callback
+function(err, results){
+    console.log(results); //  ['error', 3] 
+});
+
+```
+
+
+---------------------------------------
+
 
 <a name="parallel"></a>
 #### parallel(tasks, [done_callback])
@@ -159,6 +203,45 @@ sonicAsync.parallelLimit([
 // optional done callback
 function(err, results){
     console.log(results); //  [1, 2, 3, 4, 5] 
+});
+
+```
+
+
+---------------------------------------
+
+
+<a name="race"></a>
+### race(tasks, [done_callback])
+
+Runs all the `tasks` in parallel as if all of them run at the same time. 
+the `done_callback` is immediately called with the value of either failure or success from the 1st completed task.
+
+__Arguments__
+
+* `tasks` - an array of functions to be executed. Each function is passed
+  a `callback(err, result)` which it must call on completion with an error `err`
+  (which can be `null`) and an optional `result` value.
+* `done_callback(err, result)` - an optional callback to be invoked by the 1st completed task callback.
+
+__Example__
+
+```js
+sonicAsync.race([
+    function(callback){
+        setTimeout(function(){
+            callback(null, 2);
+        }, 2);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 3);
+        }, 3);
+    }
+],
+// optional done callback
+function(err, result){
+    console.log(result); //  2 
 });
 
 ```

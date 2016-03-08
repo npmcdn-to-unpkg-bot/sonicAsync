@@ -340,6 +340,45 @@ obj.parallel = function(tasks, done) {
     while(idx) { idx -= 1; tasks[idx](eachtsk(idx)); }
 };
 
+obj.all = function(tasks, done) {
+    done = done || noopfn;
+    var len = tasks.length, results = [], idx=len;
+    function eachtsk(idx) {
+      return function store(err, data) {
+        if( idx === null ) {
+            if( done !== noopfn )
+                called_already(err, data);
+            return;
+        }
+        if( !err )
+            results[idx] = data;
+        else
+            results[idx] = err;
+        idx = null;
+        len -= 1;
+        if( !len ) {
+            done(null, results);
+            done = noopfn;
+        }
+      };
+    }
+    while(idx) { idx -= 1; tasks[idx](eachtsk(idx)); }
+};
+
+obj.race = function(tasks, done) {
+    done = done || noopfn;
+    var idx = tasks.length;
+    function once(err, data) {
+        if( !err ) {
+            done(null, data);
+        } else {
+            done(err, null);
+        }
+        done = noopfn;
+    }
+    while(idx) { idx -= 1; tasks[idx](once); }
+};
+
 obj.parallelLimit = function(tasks, max, done) {
   done = done || noopfn;
   var len = tasks.length;
