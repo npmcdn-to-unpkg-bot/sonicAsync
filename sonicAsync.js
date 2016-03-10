@@ -212,8 +212,39 @@ obj.mapParallel = function(data, mapfunc, cb) {
     while(len) { len -= 1; runeach(len); }
 };
 
+obj.mapAll = function(data, mapfunc, cb) {
+    cb = cb || noopfn;
+    var len = data.length;
+    var results = new Array(len);
+    var cnt = len;
+
+    function runeach(idx) {
+        function runnext(err, data) {
+            if( idx === null ) {
+                called_already(err, data);
+                return;
+            }
+            if( !err ) { 
+                results[idx] = data;
+            } else {
+                results[idx] = err;
+            }
+            cnt -= 1;
+            idx = null;
+            if( !cnt ) {
+                cb(err, results);
+                cb = noopfn;
+            }
+        }
+        mapfunc(data[idx], runnext);
+    }
+
+    while(len) { len -= 1; runeach(len); }
+};
+
 
 obj.map = obj.mapParallel;
+obj.mapAllParallel = obj.mapAll;
 
 obj.filterLimit = function(data, filterfunc, max, cb) {
     cb = cb || noopfn;

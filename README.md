@@ -33,6 +33,7 @@ Click the name of each API for details.
 ### Collections
 
 * [`map`](#map) - maps the values in a collection in parallel and returns a new array that contains the mapped values.
+* [`mapAll`](#mapAll) - maps the values in a collection in parallel and returns a new array that contains the mapped values regardless the mapper's return status.
 * [`mapParallel`](#mapParallel) - same as [`map`](#map).
 * [`mapLimit`](#mapLimit) - maps the values in a collection in parallel with limited concurrency and returns a new array that contains the mapped values.
 * [`mapSeries`](#mapSeries) - maps the values in a collection sequencially and returns a new array that contains the mapped values.
@@ -360,7 +361,7 @@ __Arguments__
   The `mapfunc` is passed a `callback(err, transformed_item)` which must be called once
   it has completed with an error (which can be `null`) and a transformed item.
 * `done_callback(err, results)` - an optional callback which is called when all `mapfunc`
-  functions have finished, or an error occurs.  Results is an array of the
+  functions have finished, or an error occurs.  Results are an array of the
   transformed items from the `data` array.
 
 __Example__
@@ -375,6 +376,48 @@ sonicAsync.map([1,2,3],
     }, 
     function(err, results){
         console.log(results); //  [2,4,6]
+});
+```
+
+
+---------------------------------------
+
+
+<a name="mapAll"></a>
+### mapAll(data, mapfunc, [done_callback])
+
+Produces a new array by mapping each value in the `data` array through
+the `mapfunc` function. The `mapfunc` is called with an item from `data` and a
+callback for when it has finished processing.  Each of these callbacks takes 2 arguments:
+an `error`, and the transformed item from `data`.
+Since this API applies the `mapfunc` to each item in parallel,
+the `mapfunc` functions can complete in any order.
+However, the results array will be in the same order as the original `data` array.  The `done_callback` is called when all the values in `data` has been mapped regarless the return status of manpfunc.
+
+__Arguments__
+
+* `data` - an array to iterate over.
+* `mapfunc(item, callback)` - a function to apply to each item in `data`.
+  The `mapfunc` is passed a `callback(err, transformed_item)` which must be called once
+  it has completed with an error (which can be `null`) and a transformed item.
+* `done_callback(err, results)` - an optional callback which is called when all `mapfunc`
+  functions have finished.  Results are an array of the transformed items from the `data` array.
+
+__Example__
+
+```js
+sonicAsync.map([1,2,3], 
+    function mapfunc(val, cb) {
+        setTimeout(function() {
+            if( val === 2 )
+                cb('error', null);
+            else
+                cb(null, val*2);
+            }, 5
+        );
+    }, 
+    function(err, results){
+        console.log(results); //  [2,'error',6]
 });
 ```
 

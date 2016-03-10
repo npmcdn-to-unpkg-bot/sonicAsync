@@ -46,10 +46,16 @@ function mktrack(valarray, safewf) {
     return atrack;
 }
 
+var maperr;
 function maptst(val, cb) {
     var rn = Math.random()*3;
     setTimeout(function mapfn() {
-        cb(null, val*2);
+        if( val===2 && maperr === 1 ) {
+            cb('error', null);
+        } else {
+            cb(null, val*2);
+        }
+            
         if( val===1 )
             cb(null, val*2);
     },rn);
@@ -76,6 +82,7 @@ var cmp = {
     mapLimit: {op: assert.deepEqual, val:[ 2,4,6]},
     mapParallel: {op: assert.deepEqual, val:[ 2,4,6]},
     map: {op: assert.deepEqual, val:[ 2,4,6]},
+    mapAll: {op: assert.deepEqual, val:[2,'error',6]},
     filterSeries: {op: assert.deepEqual, val:[1,3,5,7,9]},
     filterParallel: {op: assert.deepEqual, val:[1,3,5,7,9]},
     filter: {op: assert.deepEqual, val:[1,3,5,7,9]},
@@ -127,7 +134,12 @@ function sonicSuite(async, sonicName){
         it('map tasks in series', function(done){
             async.mapSeries([1,2,3], maptst, wrap_result_cb(done, 'mapSeries'));
         });
+        it('mapAll tasks in parallel', function(done){
+            maperr = 1;
+            async.mapAll([1,2,3], maptst, wrap_result_cb(done, 'mapAll'));
+        });
         it('map tasks in parallel', function(done){
+            maperr = 0;
             async.map([1,2,3], maptst, wrap_result_cb(done, 'map'));
         });
         it('map tasks in parallel', function(done){
