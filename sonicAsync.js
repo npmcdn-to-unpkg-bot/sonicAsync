@@ -487,4 +487,4 @@ function throw_limiterr() {
 obj.trace = 0;
 obj.silent = 0;
 
-})(module && exports?exports:this.sonicAsync=this.sonicAsync||{});
+})(typeof module === 'object' && typeof exports === 'object'?exports:this.sonicAsync=this.sonicAsync||{});
