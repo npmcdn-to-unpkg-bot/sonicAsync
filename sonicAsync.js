@@ -411,50 +411,46 @@ obj.race = function(tasks, done) {
 };
 
 obj.parallelLimit = function(tasks, max, done) {
-  done = done || noopfn;
-  var len = tasks.length;
-  if( !max || max>len ) {
-    throw_limiterr();
-  }
-  var rk = [max-1, [], done, 0, len, 0];
-  
-  for(var i=0; i<max; i+=1) { 
-      rk[3] += 1;
-      eachfnLimit(tasks, i, rk); 
-  }
-};
+    if( !max || max>len ) {
+        throw_limiterr();
+    }
 
-function eachfnLimit(tasks, idx, rk) {
-  var called;
-  function store(err, data) {
-    if( !called ) {
-        called = 1;
-    } else {
-        called_already(err, data);
-        return;
-    }
-    rk[3] -= 1;
-    if( !err ) {
-      rk[1][idx] = data;
-      rk[0] += 1;
-      if( rk[0] < rk[4] ) {
-          rk[3] += 1;
-          eachfnLimit(tasks, rk[0], rk);
-      } else {
-          if( !rk[3] && !rk[5] ) {
-            rk[5] = 1;
-            rk[2](err, rk[1]);
+    done = done || noopfn;
+    var len = tasks.length,
+        results = [],
+        runcnt = max - 1,
+        cnt = runcnt;
+
+    function eachfnLimit(idx) {
+      return function store(err, data) {
+        var i = idx;
+        if( i === null ) {
+            called_already(err, data);
+            return;
+        }
+        if( !err ) {
+          results[i] = data;
+          runcnt += 1;
+          idx = null;
+          var rc = runcnt;
+          if( rc < len  ) {
+              tasks[rc](eachfnLimit(rc));
+          } else if( cnt ) {
+              cnt -= 1;
+          } else {
+              done(err, results);
+              done = noopfn;
           }
-      }
-    } else {
-      if( !rk[5] ) {
-        rk[5] = 1;
-        rk[2](err, rk[1]);
-      }
+        } else {
+            done(err, results);
+            done = noopfn;
+        }
+      };
     }
-  }
-  tasks[idx](store);
-}
+    for(var i=0; i<max; i+=1) { 
+        tasks[i](eachfnLimit(i));
+    }
+};
 
 obj.Noapply = function(fn) {
     var args = [].slice.call(arguments, 1);

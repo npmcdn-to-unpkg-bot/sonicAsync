@@ -19,6 +19,12 @@ elif [ "$benchmark" = "doxbee-errors" ]; then
     echo "Doxbee sequential with 10% errors"
     $nodepath performance.js --n 10000 --t 1 --e 0.1 ./doxbee-sequential-errors/*.js --harmony "$@"
     exit 0
+elif [ "$benchmark" = "limit" ]; then
+    cd "$cwd/benchmark"
+    #npm install
+    echo "Madeup limit"
+    $nodepath performance.js --n 10000 --t 1 --p 25 ./madeup-limit/*.js --harmony "$@"
+    exit 0
 elif [ "$benchmark" = "parallel" ]; then
     cd "$cwd/benchmark"
     #npm install

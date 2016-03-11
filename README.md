@@ -634,6 +634,22 @@ results for 10000 parallel executions, 1 ms per I/O op
 |promises-obvious-kew.js|                           5936|      823.56|
 
 
+### Concurrency
+
+Run: npm run benchl  
+Total number of tasks: 25  
+Concurrency: 5  
+
+results for 10000 parallel executions, 1 ms per I/O op
+
+|file|                                          time(ms)|  memory(MB)|
+| ------------------------- | -------------:| -------------:|
+|callbacks-peterluhub-sonic-async-parallel.js|       439|      100.89|
+|callbacks-suguru03-neo-async-parallel.js|           462|      100.66|
+|promises-bluebird.js|                               607|      106.64|
+|callbacks-caolan-async-parallel.js|                 992|      221.04|
+
+
 <br />
   
 Platform info:  

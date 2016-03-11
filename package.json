@@ -9,6 +9,7 @@
     "prebuild": "./node_modules/.bin/jshint ./sonicAsync.js",
     "benchw": "./bench doxbee",
     "benchp": "./bench parallel",
+    "benchl": "./bench limit",
     "release": "npm run build && npm test"
   },
   "repository": {
