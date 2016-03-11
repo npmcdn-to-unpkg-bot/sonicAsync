@@ -644,8 +644,8 @@ results for 10000 parallel executions, 1 ms per I/O op
 
 |file|                                          time(ms)|  memory(MB)|
 | ------------------------- | -------------:| -------------:|
-|callbacks-peterluhub-sonic-async-parallel.js|       439|      100.89|
-|callbacks-suguru03-neo-async-parallel.js|           462|      100.66|
+|callbacks-peterluhub-sonic-async-parallelLimit.js|       439|      100.89|
+|callbacks-suguru03-neo-async-parallelLimit.js|           462|      100.66|
 |promises-bluebird.js|                               607|      106.64|
 |callbacks-caolan-async-parallel.js|                 992|      221.04|
 
