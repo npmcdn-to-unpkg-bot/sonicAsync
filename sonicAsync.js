@@ -212,6 +212,18 @@ obj.mapParallel = function(data, mapfunc, cb) {
     while(len) { len -= 1; runeach(len); }
 };
 
+obj.eachLimit = function(data, mapfunc, limit, cb) {
+    obj.mapLimit(data, mapfunc, limit, cb);
+};
+
+obj.eachSeries = function(data, mapfunc, cb) {
+    obj.mapLimit(data, mapfunc, 1, cb);
+};
+
+obj.each = function(data, mapfunc, cb) {
+    obj.map(data, mapfunc, cb);
+};
+
 obj.mapAll = function(data, mapfunc, cb) {
     cb = cb || noopfn;
     var len = data.length;
@@ -411,13 +423,12 @@ obj.race = function(tasks, done) {
 };
 
 obj.parallelLimit = function(tasks, max, done) {
-    if( !max || max>len ) {
+    if( !max || max>tasks.length ) {
         throw_limiterr();
     }
 
     done = done || noopfn;
-    var len = tasks.length,
-        results = [],
+    var results = [],
         runcnt = max - 1,
         cnt = runcnt;
 
@@ -433,8 +444,9 @@ obj.parallelLimit = function(tasks, max, done) {
           runcnt += 1;
           idx = null;
           var rc = runcnt;
-          if( rc < len  ) {
-              tasks[rc](eachfnLimit(rc));
+          var tsk = tasks[rc];
+          if( tsk ) {
+              tsk(eachfnLimit(rc));
           } else if( cnt ) {
               cnt -= 1;
           } else {

@@ -5,14 +5,14 @@ It consistently comes out on top on benchmarking runs.  For the API calls that a
 they are compatible with Async except [`waterfall`](#waterfall).
 
 
-Sonic-Async can be installed with npm.
+Sonic-Async can be installed as a node module with npm.
 
     $npm install sonic-async
 
-You can also use it in a browser.
+You can also use it in a browser running as a very lightweight JS library.
 
 ```html
-<script type="text/javascript" src="sonicAsync.js"></script>
+<script type="text/javascript" src="https://npmcdn.com/sonic-async/sonicAsync.min.js"></script>
 ```
 
 ## API Sumary
