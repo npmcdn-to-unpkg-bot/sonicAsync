@@ -12,7 +12,7 @@ Sonic-Async can be installed as a node module with npm.
 You can also use it in a browser running as a very lightweight JS library.
 
 ```html
-<script type="text/javascript" src="https://npmcdn.com/sonic-async/sonicAsync.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/sonic-async/sonicAsync.min.js"></script>
 ```
 
 ## API Sumary
